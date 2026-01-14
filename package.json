@@ -1,0 +1,13 @@
+{
+    "name": "libra-escape",
+    "version": "1.0.0",
+    "description": "Multiplayer team-based escape game",
+    "scripts": {
+        "server": "cd server && npm start",
+        "client": "cd client && npx serve .",
+        "dev": "npm run server"
+    },
+    "keywords": ["game", "multiplayer", "socket.io"],
+    "author": "@mchl-mumo",
+    "license": "MIT"
+}
