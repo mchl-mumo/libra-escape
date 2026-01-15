@@ -13,12 +13,18 @@ const UPDATE_RATE_LIMIT = 50; // Minimum ms between updates (50ms = 50hz = 20fps
 // Create express server and socket.io server
 const app = express();
 const httpServer = createServer(app);
+
+const ALLOWED_ORIGINS = process.env.CLIENT_URL
+    ? process.env.CLIENT_URL.split(',').map(url => url.trim())
+    : ['http://localhost:8080', 'http://localhost:5500', 'http://127.0.0.1:5500'];
+
+console.log('Allowed CORS origins:', ALLOWED_ORIGINS);
+
 const io = new Server(httpServer, {
     cors: {
-        // TODO: Restrict to specific origins in production
-        // Example: origin: "https://frontend-url.com"
-        origin: "*",
+        origin: ALLOWED_ORIGINS,
         methods: ["GET", "POST"],
+        credentials: true
     }
 });
 
@@ -104,6 +110,7 @@ io.on("connection", (socket) => {
 });
 
 const PORT = process.env.PORT || 3000;
-httpServer.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
+const HOST = process.env.HOST || '0.0.0.0'; // For fly.io
+httpServer.listen(PORT, HOST, () => {
+    console.log(`Server is running on http://${HOST}:${PORT}`);
 });

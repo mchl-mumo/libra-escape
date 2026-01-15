@@ -2,6 +2,7 @@ import { InputHandler } from './core/InputHandler.js';
 import { Player } from './entities/Player.js';
 import { Network } from './network/NetworkClient.js';
 import { GAME_WIDTH, GAME_HEIGHT } from './constants.js';
+import { CONFIG } from './config.js';
 
 window.addEventListener('load', function() {
     const canvas = document.getElementById('canvas1');
@@ -67,7 +68,7 @@ window.addEventListener('load', function() {
     const game = new Game(canvas.width, canvas.height);
 
     // Connect to server
-    game.network.connect('http://localhost:3000')
+    game.network.connect(CONFIG.SERVER_URL)
         .then(() => console.log('Connected and ready!'))
         .catch(err => console.log('Running in offline mode:', err.message));
 

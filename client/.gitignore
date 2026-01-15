@@ -1,0 +1,28 @@
+# Dependencies
+node_modules/
+
+# IDE settings
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thungs.db
+
+# Environment files
+.env
+.env.local
+
+# Vercel
+.vercel
+
+# Fly.io
+.fly/
+
+# Logs
+*.log
+npm-debug.log*
+
+# Build output
+dist/
+build/

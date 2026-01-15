@@ -45,6 +45,14 @@ export class Network {
 
     connect(serverUrl = 'http://localhost:3000') {
         this.serverUrl = serverUrl;
+        // Clear socket connection before creating a new one
+        if (this.socket) {
+            this.socket.removeAllListeners();
+            this.socket.disconnect();
+            this.socket = null;
+        }
+
+        this.game.remotePlayers.clear();
 
         //Load socket.io client from CDN
         return new Promise((resolve, reject) => {
@@ -59,7 +67,9 @@ export class Network {
                 reject(new Error('Connection timed out'));
             }, CONNECTION_TIMEOUT);
 
-            this.socket = io(serverUrl);
+            this.socket = io(serverUrl, {
+                reconnection: false // Disable automatic reconnection
+            });
 
             this.socket.on('connect', () => {
                 console.log('Connected to server');
@@ -108,8 +118,11 @@ export class Network {
                     console.warn('Invalid playerJoined data:', playerData);
                     return;
                 }
-                console.log(`Player joined: ${playerData.id}`);
-                this.game.addRemotePlayer(playerData);
+                // Prevent duplication
+                if (!this.game.remotePlayers.has(playerData.id)) {
+                    console.log(`Player joined: ${playerData.id}`);
+                    this.game.addRemotePlayer(playerData);
+                }
             });
 
             // Another player moved

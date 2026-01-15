@@ -1,0 +1,13 @@
+{
+    "rewrites": [
+        { "source": "/(.*)", "destination": "/" }
+    ],
+    "headers": [
+        {
+            "source": "/(.*)",
+            "headers": [
+                { "key": "Access-Control", "value": "public, max-age=0, must-revalidate" }
+            ]
+        }
+    ]
+}
